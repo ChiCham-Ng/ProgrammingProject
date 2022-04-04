@@ -17,7 +17,7 @@ Player::Player()
 	loadContent();
 	body.setPosition(400, 450);
 
-	health = 3;
+	health = 100;
 	speed = 3;
 	score = 0;
 
@@ -40,29 +40,6 @@ void Player::loadContent()
 
 }
 
-void Player::shoot()
-{
-	Bullet bullet;
-	bullet.loadContent();
-	
-
-	bullet.isfired = true;
-
-	bullet.direction = direction; //bullet direction = player's direction
-
-	sf::Vector2f bulletPos = bullet.body.getPosition();
-	sf::Vector2f playerPos = body.getPosition();
-
-	bulletPos.x = playerPos.x + 9; //top middle of player
-	bulletPos.y = playerPos.y ;
-
-	bullet.body.setPosition(bulletPos);
-
-	bullet.draw();
-	bullet.move();
-
-
-}
 
 void Player::dies()
 {
@@ -99,6 +76,8 @@ void Player::moveLeft()
 	{
 		std::cout << "Error" << std::endl;
 	}
+
+	direction = 1;
 	body.setTexture(textureWest);
 
 
@@ -124,6 +103,8 @@ void Player::moveRight()
 	{
 		std::cout << "Error" << std::endl;
 	}
+
+	direction = 2;
 	body.setTexture(textureEast);
 
 
@@ -148,6 +129,8 @@ void Player::moveUp()
 	{
 		std::cout << "Error" << std::endl;
 	}
+
+	direction = 3;
 	body.setTexture(textureNorth);
 
 
@@ -171,6 +154,7 @@ void Player::moveDown()
 	{
 		std::cout << "Error" << std::endl;
 	}
+	direction = 4;
 	body.setTexture(textureSouth);
 
 }
@@ -181,23 +165,3 @@ void Player::increaseScore(int t_newScore)
 	score = score + t_newScore;
 }
 
-//bool Player::collisionDection(EnemyLeftRight aEnemyLR[], const int MAX_ENEMIES)
-//{
-//	bool collide = false;
-//
-//	sf::Vector2f pos(body.getPosition()); //get the player position
-//	sf::Vector2f sizeVec(18, 24);
-//
-//	for (int index = 0; index < MAX_ENEMIES; index++)
-//	{
-//		sf::Vector2f enemyPos(aEnemyLR[index].body.getPosition()); //get the enemyLR position
-//
-//		if ((enemyPos.x >= pos.x) && (enemyPos.x + 18 <= pos.x + 18) &&
-//			(enemyPos.y >= pos.y) && (enemyPos.y + 24 <= pos.y + 24)) //picture size = 18*24
-//		{
-//			collide = true;
-//		}
-//	}
-//
-//	return collide;
-//}

@@ -5,6 +5,7 @@
 
 
 #include <SFML/Graphics.hpp>
+#include"Player.h"
 
 class Bullet
 
@@ -33,4 +34,5 @@ public:
 	void fired();
 	void move();
 
+	void shoot(Player t_aPlayer);
 };

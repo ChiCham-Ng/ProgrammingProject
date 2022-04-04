@@ -140,13 +140,21 @@ void Game::update()
 			player.moveDown();
 		}
 
-		/*if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-		{
-			bullet.setPosition(body.getPosition());
 
-			Game::window.draw(bullet);
-			player.shoot();
-		}*/
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+		{
+			if (bullet.isfired == false)
+			{
+				bullet.shoot(player);
+			}
+	
+			
+		}
+		if (bullet.isfired == true)
+		{
+
+			bullet.move();
+		}
 
 	}
 	
@@ -213,6 +221,11 @@ void Game::draw()
 		}
 	}
 	
+	if (bullet.isfired == true)
+	{
+		window.draw(bullet.body);
+
+	}
 
 
 	window.display();
