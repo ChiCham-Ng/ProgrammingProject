@@ -10,8 +10,8 @@ EnemyLeftRight::EnemyLeftRight()
 {
 	loadContent();
 
-	int xPos = (rand() % 800) + 1;    // random number between 1 and 800
-	int yPos = (rand() % 350) + 51;   // random number between 50 and 400
+	xPos = (rand() % 800) + 1;    // random number between 1 and 800
+	yPos = (rand() % 350) + 51;   // random number between 50 and 400
 	body.setPosition(xPos, yPos);
 
 	speed = (rand() % 5) + 1;  // 5 level of speed
@@ -24,9 +24,13 @@ EnemyLeftRight::EnemyLeftRight()
 
 void EnemyLeftRight::loadContent()
 {
-	if (!textureEast.loadFromFile("ASSETS\\IMAGES\\enemyRight.png"))
+	if (!textureEast.loadFromFile("ASSETS\\IMAGES\\enemyRight.png"))// load picture
 	{
 		std::cout << "Error- Emeny pic" << std::endl;
+	}
+	if (!textureWest.loadFromFile("ASSETS\\IMAGES\\enemyLeft.png")) // load picture
+	{
+		std::cout << "Error" << std::endl;
 	}
 	body.setTexture(textureEast);
 }
@@ -59,30 +63,22 @@ void EnemyLeftRight::move()
 	sf::Vector2f pos(body.getPosition());  // get the current position
 
 	sf::Vector2f playerPosition;
-	if (direction == 1)   //move to right
+	if (direction == WEST)   //move to left
 	{
 
-		if (!textureWest.loadFromFile("ASSETS\\IMAGES\\enemyRight.png")) // load picture
-		{
-			std::cout << "Error" << std::endl;
-		}
 		body.setTexture(textureWest);
 
 		if (pos.x <= 0)  //keep the enemies in screen
 		{
-			direction = 2;
+			direction = EAST;
 		}
 		pos.x = pos.x - speed;
 	}
 
-	if (direction == 2)   //move to left
+	else if (direction == EAST)   //move to right
 	{
-		if (!textureEast.loadFromFile("ASSETS\\IMAGES\\enemyLeft.png"))  // load picture
-		{
-			std::cout << "Error" << std::endl;
-		}
-		body.setTexture(textureEast);
 
+		body.setTexture(textureEast);
 
 		if (pos.x >= SCREEN_WIDTH - 18)  //keep the enemies in screen
 		{

@@ -21,11 +21,11 @@ void Bullet::loadContent()
 	{
 		std::cout << "Error" << std::endl;
 	}
-	if (!textureEast.loadFromFile("ASSETS\\IMAGES\\arrowLeft.png"))  // load picture
+	if (!textureEast.loadFromFile("ASSETS\\IMAGES\\arrowRight.png"))  // load picture
 	{
 		std::cout << "Error" << std::endl;
 	}
-	if (!textureWest.loadFromFile("ASSETS\\IMAGES\\arrowRight.png"))  // load picture
+	if (!textureWest.loadFromFile("ASSETS\\IMAGES\\arrowLeft.png"))  // load picture
 	{
 		std::cout << "Error" << std::endl;
 	}
@@ -102,22 +102,22 @@ void Bullet::shoot(Player t_aPlayer)
 	direction = t_aPlayer.direction; //bullet direction = player's direction
 	if (direction == 4)
 	{
-		body.setTexture(textureSouth);
+		body.setTexture(textureSouth, true);
 	}
 	else if (direction == 3)
 	{
 
-		body.setTexture(textureNorth);
+		body.setTexture(textureNorth, true);
 	}
 	else if (direction == 2)
 	{
 
-		body.setTexture(textureEast);
+		body.setTexture(textureEast, true);
 	}
 	else
 	{
 
-		body.setTexture(textureWest);
+		body.setTexture(textureWest, true);
 	}
 
 

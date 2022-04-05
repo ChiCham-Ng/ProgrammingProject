@@ -19,7 +19,10 @@ class EnemyLeftRight
 public: //new function
 
 	sf::Sprite body;
+	int xPos; //set Position
+	int yPos; //set Position
 	bool isAlive;
+	
 
 	EnemyLeftRight(); //default constructor
 	void loadContent(); //load the enmeies image file

@@ -12,8 +12,8 @@ EnemyFollow::EnemyFollow()
 {
 	loadContent();
 
-	int xPos = (rand() % 800) + 1;    // Generates a random number between 1 and 800
-	int yPos = 50;  
+	xPos = (rand() % 800) + 1;    // Generates a random number between 1 and 800
+	yPos = 50;  
 	body.setPosition(xPos, yPos);
 
 	speed = (rand() % 2) + 1;  // 2 level of speed

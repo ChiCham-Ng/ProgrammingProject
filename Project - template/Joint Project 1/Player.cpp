@@ -15,9 +15,12 @@ Player::Player()
 {
 
 	loadContent();
-	body.setPosition(400, 450);
+	body.setPosition(400, 500);
 
-	health = 10;
+	A_HEALTH = 5;
+	health = A_HEALTH;
+
+	direction = 3;
 	speed = 3;
 	score = 0;
 
@@ -62,8 +65,8 @@ void Player::dies()
 {
 	if (health == 0)
 	{
-
 		body.setTexture(textureDies);
+		gameOver = true;
 	}
 }
 

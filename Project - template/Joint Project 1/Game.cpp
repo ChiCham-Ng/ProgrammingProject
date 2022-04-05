@@ -69,7 +69,18 @@ void Game::loadContent()
 	m_message2.setFont(m_font);  // set the font for the text
 	m_message2.setCharacterSize(20); // set the text size
 	m_message2.setFillColor(sf::Color::White); // set the text colour
-	m_message2.setPosition(670, 570);  // its position on the screen
+	m_message2.setPosition(640, 570);  // its position on the screen
+
+		// set up the message string 
+	m_messageMain.setFont(m_font);  // set the font for the text
+	m_messageMain.setCharacterSize(40); // set the text size
+	m_messageMain.setFillColor(sf::Color::Red); // set the text colour
+	m_messageMain.setPosition(210, 230);  // its position on the screen
+
+	m_messageMain2.setFont(m_font);  // set the font for the text
+	m_messageMain2.setCharacterSize(30); // set the text size
+	m_messageMain2.setFillColor(sf::Color::White); // set the text colour
+	m_messageMain2.setPosition(200, 280);  // its position on the screen
 
 }
 
@@ -90,6 +101,8 @@ void Game::run()
 
 	clock.restart();
 
+	gameMode = 1; //display game intruction to start
+
 	while (window.isOpen())
 	{
 		// check if the close window button is clicked on
@@ -107,6 +120,7 @@ void Game::run()
 		//only when the time since last update is greater than 1/60 update the world.
 		if (timeSinceLastUpdate > timePerFrame)
 		{
+
 			update();
 			draw();
 
@@ -120,69 +134,137 @@ void Game::run()
 void Game::update()
 // This function takes the keyboard input and updates the game world
 {
-	// get keyboard input
-	if (player.health > 0) // if player is alive
+	if (gameMode == 1) //GAME instruction mode
 	{
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-		{
-			player.moveLeft();
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-		{
-			player.moveRight();
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-		{
-			player.moveUp();
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-		{
-			player.moveDown();
-		}
 
+		m_messageMain.setString("Press SPACE button to start Game");
 
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 		{
-			for (int index = 0; index < MAX_BULLETS; index++)
-			{
-				if (bulletArray[index].isfired == false)
-				{
-					bulletArray[index].shoot(player);
-				}
-			}
+			m_messageMain.setString("");
+			gameMode = 2;
+			player.gameOver = false;
 		}
+	}
 
-			for (int index = 0; index < MAX_BULLETS; index++)
-			{
-				if (bulletArray[index].isfired == true)
-				{
-					bulletArray[index].move();
-				}
-			}
+	else if (gameMode == 2)  //play game mode
+	{
 		
-	}
-	
-
-
-	// update any game variables here ...
-
-	moveEnemiesLR(); //move enemies Left Right
-	enemiesFollowMove(); //move enemies Follow player
-
-	collisionDetection(); // If the player and the enemy collide
-	collisionDetectionBullet(); //If bullet andenemy collide
-
-	
-	if (player.health > 0) // if player is alive, enamyFollow respawn
-	{
-		for (int index = 0; index < MAX_ENEMIESF; index++) //reSpawn enamyFollow when dies
+		// get keyboard input
+		
+		if (player.health > 0) // if player is alive
 		{
-			enemyFArray[index].reSpawn();
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+			{
+				player.moveLeft();
+			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+			{
+				player.moveRight();
+			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+			{
+				player.moveUp();
+			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+			{
+				player.moveDown();
+			}
+
+
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+			{
+				for (int index = 0; index < MAX_BULLETS; index++)
+				{
+					if (bulletArray[index].isfired == false && bowDrawTimer == 0)
+					{
+						bulletArray[index].shoot(player);
+						bowDrawTimer = BOW_DRAW_DELAY;
+					}
+				}
+			}
+		}
+
+		if (bowDrawTimer > 0)
+			bowDrawTimer--;
+
+		for (int index = 0; index < MAX_BULLETS; index++)
+		{
+			if (bulletArray[index].isfired == true)
+			{
+				bulletArray[index].move();
+			}
+		}
+
+
+		// update any game variables here ...
+		moveEnemiesLR(); //move enemies Left Right
+		enemiesFollowMove(); //move enemies Follow player
+
+		collisionDetection(); // If the player and the enemy collide
+		collisionDetectionBullet(); //If bullet andenemy collide
+
+
+
+		// if player is alive, enamyFollow respawn
+		if (player.health > 0 && noEnemies > 0)
+		{
+			for (int index = 0; index < MAX_ENEMIESF; index++) //reSpawn enamyFollow when dies
+			{
+				enemyFArray[index].reSpawn();
+			}
+		}
+
+
+		player.dies();  //if player's health = 0
+		noEnemies = 	countEnemies();
+		if (noEnemies == 0)
+		{
+			player.gameOver = true;
+		}
+
+		//END GAME
+		if (player.health == 0 && noEnemies > 0 && player.gameOver == true)
+		{
+			gameMode = 3;
+		}
+		else if (noEnemies == 0 && player.health > 0 && player.gameOver == true)
+		{
+			gameMode = 4;
+		}
+		else if (noEnemies == 0 && player.health == 0 && player.gameOver == true)
+		{
+			gameMode = 3;
+		}
+
+	}
+
+	//IF END GAME
+	if (gameMode == 3) //LOSE MODE
+	{
+		m_messageMain.setString("GAME OVER");
+		m_messageMain2.setString("Press ENTER button to restart game");
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+		{
+			gameMode = 2;
+			intialiseVariables();
 		}
 	}
 
+	 if (gameMode == 4) //WIN MODE
+	{
+   	    std::string message = "YOU WIN - score :" + std::to_string(player.score);
+	
+	    m_messageMain.setString(message);
+		m_messageMain2.setString("Press ENTER button to restart game");
 
-	player.dies();  //if player's health = 0
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+		{
+			gameMode = 2;
+			intialiseVariables();
+		}
+	}
 
 }
 
@@ -201,12 +283,18 @@ void Game::draw()
 
 	window.clear();
 	
+	//draw messare to screen
 	m_message.setString("Health: " + std::to_string(player.health) + "    Score: " + std::to_string(player.score));
-	m_message2.setString("press A to shoot ");
+	m_message2.setString("press SPACE to shoot ");
 
-	window.draw(m_message);  // write message to the screen
+	window.draw(m_message);  
 	window.draw(m_message2);
 
+	window.draw(m_messageMain);
+	window.draw(m_messageMain2);
+
+	
+	//draw player 
 	window.draw(player.body);
 
 	// draw the enemy Left Right objects 
@@ -219,7 +307,6 @@ void Game::draw()
 	}
 
 	// draw the enemy objects which follow player
-
 	for (int index = 0; index < MAX_ENEMIESF; index++) 
 	{
 		if (enemyFArray[index].isAlive == true)
@@ -239,6 +326,21 @@ void Game::draw()
 
 	window.display();
 
+}
+
+int Game::countEnemies()
+{
+	int count = 0;
+
+	for (int index = 0; index < MAX_ENEMIES; index++)
+	{
+		if (enemyLRArray[index].isAlive == true)
+		{
+			count++;
+		}
+	}
+
+	return count;
 }
 
 void Game::moveEnemiesLR()
@@ -272,6 +374,7 @@ void Game::collisionDetection()
 				player.increaseScore(100);  //increaseScore
 
 				enemyLRArray[index].isAlive = false;
+				noEnemies--;
 			}
 		}
 	}
@@ -366,5 +469,29 @@ void Game::collisionDetectionBullet()
 		}
 	}
 
+}
+
+void Game::intialiseVariables() //reset all location
+{
+	m_messageMain.setString("");
+	m_messageMain2.setString("");
+
+	player.body.setPosition(400, 450);
+	player.health = player.A_HEALTH;
+	player.direction = 3;
+	player.score = 0;
+	//player.body.setTexture(player.textureNorth); textureNorth not in public
+
+	for (int index = 0; index < MAX_ENEMIES; index++)
+	{
+		enemyLRArray[index].isAlive = true;
+		enemyLRArray[index].body.setPosition(enemyLRArray[index].xPos, enemyLRArray[index].yPos);
+	}
+
+	for (int index = 0; index < MAX_ENEMIESF; index++)
+	{
+		enemyFArray[index].body.setPosition(enemyFArray[index].xPos, enemyFArray[index].yPos);
+	}
+	player.gameOver = false;
 }
 

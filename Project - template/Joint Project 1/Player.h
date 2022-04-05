@@ -23,7 +23,7 @@ class Player
 public:
 	sf::Sprite body;
 
-
+	int A_HEALTH;
 	int health;
 	int speed;
 	int score;
@@ -31,7 +31,9 @@ public:
 
 	sf::Vector2f location = sf::Vector2f{ 0.0f,0.0f };
 
-	int noOfLives;
+	bool gameOver;
+
+	//int noOfLives;
 
 public:
 
@@ -39,8 +41,6 @@ public:
 	void draw();
 	void loadContent();
 
-
-	void shoot();
 	void dies();
 	void decreaseHealth(int t_health);
 

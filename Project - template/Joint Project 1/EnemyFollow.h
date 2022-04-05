@@ -24,6 +24,8 @@ public: //new function
 	sf::Sprite body;
 	int speed;
 	int direction;
+	int xPos;
+	int yPos;
 
 	bool isAlive;
 
