@@ -16,7 +16,7 @@ EnemyFollow::EnemyFollow()
 	int yPos = 50;  
 	body.setPosition(xPos, yPos);
 
-	speed = (rand() % 3) + 2;  // 3 level of speed (2,3,4)
+	speed = (rand() % 2) + 1;  // 2 level of speed
 
 	direction = 4;
 

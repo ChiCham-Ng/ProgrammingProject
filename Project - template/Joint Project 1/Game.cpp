@@ -143,19 +143,23 @@ void Game::update()
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 		{
-			if (bullet.isfired == false)
+			for (int index = 0; index < MAX_BULLETS; index++)
 			{
-				bullet.shoot(player);
+				if (bulletArray[index].isfired == false)
+				{
+					bulletArray[index].shoot(player);
+				}
 			}
-	
-			
-		}
-		if (bullet.isfired == true)
-		{
-
-			bullet.move();
 		}
 
+			for (int index = 0; index < MAX_BULLETS; index++)
+			{
+				if (bulletArray[index].isfired == true)
+				{
+					bulletArray[index].move();
+				}
+			}
+		
 	}
 	
 
@@ -163,8 +167,11 @@ void Game::update()
 	// update any game variables here ...
 
 	moveEnemiesLR(); //move enemies Left Right
-	collisionDetection(); // If the player and the enemy collide
 	enemiesFollowMove(); //move enemies Follow player
+
+	collisionDetection(); // If the player and the enemy collide
+	collisionDetectionBullet(); //If bullet andenemy collide
+
 	
 	if (player.health > 0) // if player is alive, enamyFollow respawn
 	{
@@ -194,7 +201,7 @@ void Game::draw()
 
 	window.clear();
 	
-	m_message.setString("Health: " + std::to_string(player.health) + "    || Score: " + std::to_string(player.score));
+	m_message.setString("Health: " + std::to_string(player.health) + "    Score: " + std::to_string(player.score));
 	m_message2.setString("press A to shoot ");
 
 	window.draw(m_message);  // write message to the screen
@@ -221,10 +228,12 @@ void Game::draw()
 		}
 	}
 	
-	if (bullet.isfired == true)
+	for (int index = 0; index < MAX_BULLETS; index++)
 	{
-		window.draw(bullet.body);
-
+		if (bulletArray[index].isfired == true)
+		{
+			window.draw(bulletArray[index].body);
+		}
 	}
 
 
@@ -251,7 +260,7 @@ void Game::collisionDetection()
 	
 	for (int index = 0; index < MAX_ENEMIES; index++)
 	{
-		if (enemyLRArray[index].isAlive == true) //if enemyLeftRight is Alive
+		if (enemyLRArray[index].isAlive == true) //if enemy is Alive
 		{
 			enemyRec = enemyLRArray[index].body.getGlobalBounds();
 
@@ -269,7 +278,7 @@ void Game::collisionDetection()
 
 	for (int index = 0; index < MAX_ENEMIESF; index++)
 	{
-		if (enemyFArray[index].isAlive == true) //if enemyLeftRight is Alive
+		if (enemyFArray[index].isAlive == true) //if enemyis Alive
 		{
 			enemyRec = enemyFArray[index].body.getGlobalBounds();
 
@@ -309,4 +318,53 @@ void Game::enemiesFollowMove()
 	}
 
 	}
+
+void Game::collisionDetectionBullet()
+{
+	sf::FloatRect bulletRec;
+	sf::FloatRect enemyRec;
+
+	bool collision = false;
+
+	for (int index = 0; index < MAX_BULLETS; index++)
+	{
+		bulletRec = bulletArray[index].body.getGlobalBounds();
+
+		for (int index = 0; index < MAX_ENEMIES; index++)
+		{
+			if (enemyLRArray[index].isAlive == true) //if enemy is Alive
+			{
+				enemyRec = enemyLRArray[index].body.getGlobalBounds();
+
+				if (bulletRec.intersects(enemyRec))
+				{
+					bulletArray[index].isfired = false;
+					collision = true;
+
+					player.increaseScore(150);  //increaseScore
+					enemyLRArray[index].isAlive = false;
+				}
+			}
+		}
+
+		for (int index = 0; index < MAX_ENEMIESF; index++)
+		{
+			if (enemyFArray[index].isAlive == true) //if enemy is Alive
+			{
+				enemyRec = enemyFArray[index].body.getGlobalBounds();
+
+				if (bulletRec.intersects(enemyRec))
+				{
+					bulletArray[index].isfired = false;
+					collision = true;
+
+					player.increaseScore(100);  //increaseScore
+
+					enemyFArray[index].isAlive = false;
+				}
+			}
+		}
+	}
+
+}
 

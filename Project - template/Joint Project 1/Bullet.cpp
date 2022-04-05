@@ -5,7 +5,7 @@
 
 Bullet::Bullet()
 {
-	speed = 6;
+	speed = 10;
 	isfired = false;
 
 	loadContent();
@@ -56,20 +56,36 @@ void Bullet::move()
 	if (direction == WEST)
 	{
 		pos.x = pos.x - speed;
+		if (pos.x <= 0)// check bounder
+		{
+			isfired = false;
+		}
 	}
 
 	else if (direction == EAST)
 	{
 		pos.x = pos.x + speed;
+		if (pos.x >= SCREEN_WIDTH)// check bounder
+		{
+			isfired = false;
+		}
 	}
 
 	else if (direction == NORTH)
 	{
 		pos.y = pos.y - speed;
+		if (pos.y <= 0)// check bounder
+		{
+			isfired = false;
+		}
 	}
 
 	else
 	{
+		if (pos.y >= SCREEN_HEIGHT)// check bounder
+		{
+			isfired = false;
+		}
 		pos.y = pos.y + speed;
 	}
 
@@ -108,8 +124,8 @@ void Bullet::shoot(Player t_aPlayer)
 	sf::Vector2f bulletPos = body.getPosition();
 	sf::Vector2f playerPos = t_aPlayer.body.getPosition();
 
-	bulletPos.x = playerPos.x + 9; //top middle of player
-	bulletPos.y = playerPos.y;
+	bulletPos.x = playerPos.x + 9; //middle of player
+	bulletPos.y = playerPos.y + 12;
 
 	body.setPosition(bulletPos);
 

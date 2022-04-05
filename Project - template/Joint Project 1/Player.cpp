@@ -17,7 +17,7 @@ Player::Player()
 	loadContent();
 	body.setPosition(400, 450);
 
-	health = 100;
+	health = 10;
 	speed = 3;
 	score = 0;
 
@@ -34,9 +34,26 @@ void Player::loadContent()
 {
 	if (!textureSouth.loadFromFile("ASSETS\\IMAGES\\down.png"))
 	{
+		std::cout << "Error-" << std::endl;
+	}
+	if (!textureNorth.loadFromFile("ASSETS\\IMAGES\\up.png"))
+	{
+		std::cout << "Error" << std::endl;
+	}
+	if (!textureEast.loadFromFile("ASSETS\\IMAGES\\right.png"))
+	{
+		std::cout << "Error" << std::endl;
+	}
+	if (!textureWest.loadFromFile("ASSETS\\IMAGES\\left.png"))
+	{
+		std::cout << "Error" << std::endl;
+	}
+
+	if (!textureDies.loadFromFile("ASSETS\\IMAGES\\die.png"))
+	{
 		std::cout << "Error- player pic" << std::endl;
 	}
-	body.setTexture(textureSouth);
+	body.setTexture(textureNorth);
 
 }
 
@@ -45,17 +62,18 @@ void Player::dies()
 {
 	if (health == 0)
 	{
-		if (!textureSouth.loadFromFile("ASSETS\\IMAGES\\die.png"))
-		{
-			std::cout << "Error- player pic" << std::endl;
-		}
-		body.setTexture(textureSouth);
+
+		body.setTexture(textureDies);
 	}
 }
 
 void Player::decreaseHealth(int t_health)
 {
-	health = health - t_health;
+	if (health > 0)
+	{
+		health = health - t_health;
+	}
+	
 }
 
 void Player::moveLeft()
@@ -72,10 +90,7 @@ void Player::moveLeft()
 	}
 	body.setPosition(pos);
 
-	if (!textureWest.loadFromFile("ASSETS\\IMAGES\\left.png"))
-	{
-		std::cout << "Error" << std::endl;
-	}
+
 
 	direction = 1;
 	body.setTexture(textureWest);
@@ -99,10 +114,6 @@ void Player::moveRight()
 	}
 	body.setPosition(pos);
 
-	if (!textureEast.loadFromFile("ASSETS\\IMAGES\\right.png"))
-	{
-		std::cout << "Error" << std::endl;
-	}
 
 	direction = 2;
 	body.setTexture(textureEast);
@@ -122,13 +133,8 @@ void Player::moveUp()
 	{
 		pos.y = pos.y - speed;
 	}
-	
 	body.setPosition(pos);
 
-	if (!textureNorth.loadFromFile("ASSETS\\IMAGES\\up.png"))
-	{
-		std::cout << "Error" << std::endl;
-	}
 
 	direction = 3;
 	body.setTexture(textureNorth);
@@ -150,13 +156,8 @@ void Player::moveDown()
 	}
 	body.setPosition(pos);
 
-	if (!textureSouth.loadFromFile("ASSETS\\IMAGES\\down.png"))
-	{
-		std::cout << "Error" << std::endl;
-	}
 	direction = 4;
 	body.setTexture(textureSouth);
-
 }
 
 

@@ -1,2 +1,6 @@
-﻿  Game.cpp
-  Joint Project 1.vcxproj -> G:\Programming\Y1\Labs\ProgrammingProject\Project - template\Debug\Joint Project 1.exe
+﻿  EnemyFollow.cpp
+C:\Users\USER\Documents\School\Y1\Programming\ProgrammingProject\OneDrive_2022-03-29\ProgrammingProject\Project - template\Joint Project 1\EnemyFollow.cpp(17,25): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\USER\Documents\School\Y1\Programming\ProgrammingProject\OneDrive_2022-03-29\ProgrammingProject\Project - template\Joint Project 1\EnemyFollow.cpp(17,19): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\USER\Documents\School\Y1\Programming\ProgrammingProject\OneDrive_2022-03-29\ProgrammingProject\Project - template\Joint Project 1\EnemyFollow.cpp(57,26): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\USER\Documents\School\Y1\Programming\ProgrammingProject\OneDrive_2022-03-29\ProgrammingProject\Project - template\Joint Project 1\EnemyFollow.cpp(57,20): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  Joint Project 1.vcxproj -> C:\Users\USER\Documents\School\Y1\Programming\ProgrammingProject\OneDrive_2022-03-29\ProgrammingProject\Project - template\Debug\Joint Project 1.exe

@@ -24,13 +24,15 @@ class Game
 	// array of enemy objects etc.
 
 	Player player;//player
-	Bullet bullet;//bullet
+
+	static const int MAX_BULLETS = 2;
+	Bullet bulletArray[MAX_BULLETS];//bullet
 	
 	static const int MAX_ENEMIES = 10;	int noEnemies; //number of enemies alive
 	EnemyLeftRight enemyLRArray[MAX_ENEMIES];  //enemy array
 
 
-	static const int MAX_ENEMIESF = 2;	int noEnemiesF;
+	static const int MAX_ENEMIESF = 2;
 	EnemyFollow enemyFArray[MAX_ENEMIESF]; 
 
 
@@ -55,7 +57,9 @@ public:	  // declaration of member functions
 	void	draw();
 
 	void	moveEnemiesLR(); // move the enemy objects within the array
-	void   collisionDetection(); // If the player and the enemy collide
 	void  enemiesFollowMove(); //move enemiesF follow the player
+
+	void   collisionDetection(); // when the player and the enemy collide
+	void collisionDetectionBullet();// when bullet and the enemy collide
 
 };

@@ -17,6 +17,8 @@ class Player
 	sf::Texture textureEast;
 	sf::Texture textureWest;
 
+	sf::Texture textureDies;
+
 
 public:
 	sf::Sprite body;
